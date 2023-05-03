@@ -55,6 +55,7 @@ def validate_data(values):
 
     return True
 
+
 def update_worksheet(data, worksheet):
     """
     Receives a list of integers to be inserted into a worksheet
@@ -76,12 +77,13 @@ def calculate_surplus_data(sales_row):
     print("Calculating surplus data...\n")
     stock = SHEET.worksheet("stock").get_all_values()
     stock_raw = stock[-1]
-    
+
     surplus_data = []
     for stock, sales in zip(stock_raw, sales_row):
         surplus = int(stock) - sales
         surplus_data.append(surplus)
     return surplus_data
+
 
 def get_last_5_entries_sales():
     """
@@ -90,12 +92,13 @@ def get_last_5_entries_sales():
     as a list of lists.
     """
     sales = SHEET.worksheet("sales")
-    
+
     columns = []
     for ind in range(1, 7):
         column = sales.col_values(ind)
         columns.append(column[-5])
     return columns
+
 
 def calculate_stock_data(data):
     """
@@ -103,14 +106,35 @@ def calculate_stock_data(data):
     """
     print("Calculating stock data...\n")
     new_stock_data = []
-    
+
     for column in data:
         int_column = [int(num) for num in column]
         average = sum(int_column) / len(int_column)
-        stock_num = average *1.1
+        stock_num = average * 1.1
         new_stock_data.append(round(stock_num))
-        
+
     return new_stock_data
+
+
+print("Getting stock data")
+
+def get_stock_values(data):
+    """
+    Get stock figures from worksheet and
+    return it as dictionary
+    """
+
+    headings = data[0]
+    # stock_left = data[8]
+    stock_data = {}
+    # for v, k in enumerate(data):
+    #     print(v, k)
+    for v, k in zip(headings, data[-1]):
+        stock_data[v] = k
+    return stock_data
+
+print("Make the following numbers of sandwiches for next market:\n")
+
 
 def main():
     """
@@ -126,7 +150,11 @@ def main():
     update_worksheet(stock_data, "stock")
     
 
-
 print("Welcome to Love Sandwiches Data Automation")
 main()
+
+
+
+
+
 
